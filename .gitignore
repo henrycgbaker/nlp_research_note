@@ -1,3 +1,5 @@
+*.pkl
+staged mapped_pretrained_embeddings.pkl
 misinfo_train_tokens.pkl
 misinfo_train_tokens.pkl
 misinfo_test_tokens.pkl
