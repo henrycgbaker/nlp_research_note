@@ -1,3 +1,5 @@
+import torch
+
 def collate_fn(data):
     text_list, label_list = [], []
     for _text, _label in data:
