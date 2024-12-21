@@ -34,7 +34,7 @@ def batch_tokenize(text_series, batch_size, analyzer_func):
     
     for batch_idx in range(0, total, batch_size):
         
-        if (batch_idx // batch_size + 1) % 20 == 0 or (batch_idx + batch_size >= total):
+        if (batch_idx // batch_size + 1) % 200 == 0 or (batch_idx + batch_size >= total):
             print(f'Tokenizing batch {batch_idx // batch_size + 1} of {num_batches}...')
         
         batch_texts = text_series[batch_idx : batch_idx + batch_size]
