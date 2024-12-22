@@ -1,3 +1,5 @@
+/5kTestTrain_results/*
+*.csv
 /transformer_results/*
 *.safetensors
 *.bin
