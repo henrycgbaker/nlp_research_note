@@ -1,4 +1,9 @@
+/transformer_results/*
+*.safetensors
+*.bin
+*.pt
 *.pkl
+*.pth
 staged mapped_pretrained_embeddings.pkl
 misinfo_train_tokens.pkl
 misinfo_train_tokens.pkl
