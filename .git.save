@@ -1,5 +1,5 @@
-/data/*
-/5kTestTrain_results/*
+/1_5kTestTrain_results/*
+/2_full_results/*
 *.csv
 /transformer_results/*
 *.safetensors
