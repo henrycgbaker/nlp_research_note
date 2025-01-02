@@ -89,12 +89,3 @@ def vocab_mapping(tokenized_text):
     vocab_tokens = special_tokens + [token for token, freq in token_counts.most_common()]
     vocab = {token: idx for idx, token in enumerate(vocab_tokens)}
     return vocab
-
-def vocab_mapping(tokenized_text):
-    token_counts = Counter()
-    for text in tokenized_text:
-        token_counts.update(text)
-    special_tokens = ["<pad>", "<unk>"]
-    vocab_tokens = special_tokens + [token for token, freq in token_counts.most_common()]
-    vocab = {token: idx for idx, token in enumerate(vocab_tokens)}
-    return vocab

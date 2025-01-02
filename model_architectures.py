@@ -127,28 +127,53 @@ class RNNTextClassifier(nn.Module):
     
 class LSTMTextClassifier(nn.Module):
     # create layers
-    def __init__(self, embedding_tensor):
+    def __init__(self, embedding_tensor, dropout_p=0.5):
         super().__init__()
-        # input layer
-        self.embedding_layer = nn.Embedding.from_pretrained(embedding_tensor, freeze=True)
-        # hidden layer
-        self.lstm_layer = nn.LSTM(input_size=embedding_tensor.size(1),
-                                  hidden_size=32,
-                                  num_layers=1,
-                                  batch_first=True)
-        # classification layer
+        # embedding layer
+        self.embedding_layer = nn.Embedding.from_pretrained(
+            embedding_tensor, 
+            freeze=True
+        )
+
+        # LSTM layer
+        self.lstm_layer = nn.LSTM(
+            input_size=embedding_tensor.size(1),
+            hidden_size=32,
+            num_layers=1,
+            batch_first=True
+        )
+        
+        # Dropout layer
+        self.dropout = nn.Dropout(p=dropout_p)
+        
+        # Classification layer
         self.classification_layer = nn.Linear(in_features=32, out_features=1)
 
     # define forward pass
     def forward(self, x, lengths):
+        # Embed the input
         x = self.embedding_layer(x)
-        x = nn.utils.rnn.pack_padded_sequence(x,
-                                              lengths.cpu().numpy(),
-                                              enforce_sorted=False,
-                                              batch_first=True)
-        o_t, (h_t, c_t) = self.lstm_layer(x) # c_t the cell state at the last time step
-        x = h_t[-1, :, :] # extract from last layer (in case of num_layers > 1)
+        
+        # Pack the sequences for variable-length handling
+        x = nn.utils.rnn.pack_padded_sequence(
+            x,
+            lengths.cpu().numpy(),
+            enforce_sorted=False,
+            batch_first=True
+        )
+        
+        # LSTM forward
+        _, (h_t, _) = self.lstm_layer(x)  # h_t is [num_layers, batch, hidden_size]
+        
+        # output from the last LSTM layer
+        x = h_t[-1, :, :]  # shape: [batch_size, hidden_size]
+        
+        # dropout before final classification layer
+        x = self.dropout(x)
+        
+        # classification
         x = self.classification_layer(x)
+        
         return x
     
 class StackedLSTMTextClassifier(nn.Module):

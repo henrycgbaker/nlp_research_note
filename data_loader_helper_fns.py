@@ -2,6 +2,10 @@ import torch
 import torch.nn as nn
 import numpy as np
 
+
+import torch
+from torch.nn.utils.rnn import pad_sequence
+
 def collate_fn(data, include_lengths=True):
     text_list, label_list, lengths = [], [], []
     for _text, _label in data:
@@ -21,6 +25,8 @@ def collate_fn(data, include_lengths=True):
         return padded_text_list, label_list, lengths
     else:
         return padded_text_list, label_list
+
+
 
 def embedding_mapping_fasttext(vocabulary, pre_trained_embeddings):
     vocab_size = len(vocabulary)
